@@ -1,0 +1,187 @@
+{% extends 'base.html' %}   
+{% load static %}
+{% block css %}
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
+    <style class="cp-pen-styles">@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700&subset=latin-ext");
+    </style>
+    <link rel="stylesheet" href="{% static 'css/check.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+
+{% endblock css %}
+{% block content %}
+
+    <body class="sidebar-is-reduced">
+      <header class="l-header">
+        <div class="l-header__inner clearfix">
+          <div class="c-header-icon js-hamburger">
+            <div class="hamburger-toggle" title="Explore more topics of {{subject.subject_name}}"><span class="bar-top"></span><span class="bar-mid"></span><span class="bar-bot"></span></div>
+          </div>
+          <div class="c-search">
+            <form method="get" style="display:inherit !important;margin:0px; width:inherit">
+
+            <input class="c-search__input u-input" style="width:auto" placeholder="Search for topic you want to learn..." name="q" type="text"/>
+            <input type="submit" class="c-header-icon btn btn-secondary" style="background: transparent;font-family: 'Pacifico', cursive; font-size: x-large; margin-right:15px; border-right:0px" value="search">
+            </form>
+          </div>
+          <div class="header-icons-group">
+            <div class="c-header-icon logout"><i class="fa fa-power-off"></i></div>
+          </div>
+          <!-- <div class="header-icons-group">
+              <div class="c-header-icon logout"><i class="fa fa-power-off"></i></div>
+            </div> -->
+        </div>
+      </header>
+      <div class="l-sidebar">
+        <div class="logo">
+          <div class="logo__txt" title="Dondler- Home"><a style="color:white;" href="/">D</a></div>
+        </div>
+        <div class="l-sidebar__content">
+          <nav class="c-menu js-menu">
+            <ul class="u-list">
+                <li class="c-menu__item has-submenu" data-toggle="tooltip" title="{{subject.subject_name}}">
+                    <div class="c-menu__item__inner" style="padding-left: 10px;">
+                      <div class="c-menu-item__title"><span style="font-weight: 900;">{{ subject.subject_name }}</span></div>
+                    </div>
+                  </li>
+                {% for unit in subject.get_units %}   
+                
+                <li class="c-menu__item has-submenu" data-toggle="tooltip" title="{{unit.unit_name}}">
+                  <div class="c-menu__item__inner" >
+                      <div class="c-menu-item__title">
+                          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion5" href="#collapseOne{{unit.id}}" aria-expanded="true" aria-controls="collapseOne5">
+
+                                  <div class="panel-heading" role="tab" id="headingOne5">
+                            
+                                      <h4 class="panel-title" style="color:white">
+                                          <i class="fa fa-file-text-o"></i>  <span style="margin-left:15px"><strong>{{unit.unit_name}}</strong></span>
+                                      </h4> 
+                                  </div>
+                                  </a>
+                                  <div id="collapseOne{{unit.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne5" style="background-color:honeydew">
+                                      <div class="panel-body">
+                                          {% for unit_part in unit.get_unit_parts %}    
+                                          <h6 style="color: black;"><strong>{{unit_part.part_head}}</strong></h6>
+                                          <ul style="padding-left: 20px;">
+                                          {% for topic in unit_part.get_topics %}
+                                          <li style="color: black;">
+                                          <a href="{{ topic.slug }}"> {{topic.topic_name}} </a><br/></li>
+                                          {% endfor %}
+                                          </ul>
+                                          {% endfor %}
+                                      </div>
+                                  </div>
+                    </div>
+                  
+
+              </div>
+            </li>
+                {% endfor %}
+
+
+
+
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </body>
+    <main class="l-main">
+      <div class="content-wrapper content-wrapper--with-bg">
+        <div class="list-group" style="margin-top:90px;">
+            {% for object in resources %}
+            <div class="list-group-item" style="margin-bottom: 10px !important">
+                <!-- <div class="media col-md-3">
+                    <figure class="pull-left">
+                        <img class="media-object img-rounded img-responsive" src="http://placehold.it/140x100" alt="placehold.it/140x100" >
+                    </figure>
+                </div> -->
+                <div class="col-md-7">
+                    <h4 class="list-group-item-heading pb-3"> <strong>{{ object.title }} </strong></h4>
+                    <strong>link: </strong><a href="{{ object.url }}">{{ object.url }}</a>
+                    <p class="list-group-item-text mb-2"> {{ object.description }}</p>
+                </div>
+                <div class="col-md-2 pull-left">
+                    <div class = "container col-md-12">
+                        <div class = "row">
+                            <div class="col-md-12 pull-left"><i class="fa fa-user"></i>  {{ object.user.name }} </div>
+                        </div>
+                        <div class = "row">
+                            <div class="col-md-12 pull-left"><i class="fa fa-calendar"></i>  {{ object.date }}</div>
+                        </div>
+                        <div class = "row">
+                            <div class="col-md-12 pull-left" title="Recommend by {{object.endorsed}}"><i class="fa fa-check"></i> {{ object.endorsed }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 text-center">
+                  {% if done is 0 %}
+                  <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ object.id }}"> 
+                    <input type="submit" class="btn btn-success float-right" value="Recommend to fellow mates"> 
+                  </form>
+                  {% endif %}
+                    <a href="{{ object.url }}" target="_blank"><button type="button" class="btn btn-primary float-right"> Open</button></a>
+                </div>
+              </div>
+            {% endfor %}
+        </div>
+        
+      </div>
+    </main>
+    <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script><script src='https://use.fontawesome.com/2188c74ac9.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    </body>
+    <script>
+    "use strict";
+    
+    var Dashboard = function () {
+        var global = {
+            tooltipOptions: {
+                placement: "right"
+            },
+            menuClass: ".c-menu"
+        };
+    
+        var menuChangeActive = function menuChangeActive(el) {
+            var hasSubmenu = $(el).hasClass("has-submenu");
+            $(global.menuClass + " .is-active").removeClass("is-active");
+            $(el).addClass("is-active");
+    
+            // if (hasSubmenu) {
+            // 	$(el).find("ul").slideDown();
+            // }
+        };
+    
+        var sidebarChangeWidth = function sidebarChangeWidth() {
+            var $menuItemsTitle = $("li .menu-item__title");
+    
+            $("body").toggleClass("sidebar-is-reduced sidebar-is-expanded");
+            $(".hamburger-toggle").toggleClass("is-opened");
+    
+            if ($("body").hasClass("sidebar-is-expanded")) {
+                $('[data-toggle="tooltip"]').tooltip("destroy");
+            } else {
+                $('[data-toggle="tooltip"]').tooltip(global.tooltipOptions);
+            }
+        };
+    
+        return {
+            init: function init() {
+                $(".js-hamburger").on("click", sidebarChangeWidth);
+    
+                $(".js-menu li").on("click", function (e) {
+                    menuChangeActive(e.currentTarget);
+                });
+    
+                $('[data-toggle="tooltip"]').tooltip(global.tooltipOptions);
+            }
+        };
+    }();
+    
+    Dashboard.init();
+    </script>
+    
+    {% endblock content %}

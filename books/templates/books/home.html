@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Patua+One&display=swap" rel="stylesheet">
+
+{% endblock css %}
+{% block content %}
+
+{% include 'navbar.html' %}
+
+
+    <div class="container-fluid gedf-wrapper">
+        <div class="row mt-5">
+            <div class="col-md-6 gedf-main">
+                <temp style="font-size:20px"></temp>
+            </div>
+            <div class="col-md-6">
+                <h2 style="font-family: 'Patua One', cursive; margin-left: 18px;">Your Subjects :</h2>
+                <div class="container mt-10">
+                    <div class="panel-group" id="accordion4" role="tablist" aria-multiselectable="true">
+                        {% for subject in subjects %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingOne4">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion4" href="#collapseOne{{subject.id}}" aria-expanded="true" aria-controls="collapseOne4">
+                                        <i class="icon fa fa-globe"></i>
+                                        <span>{{ subject.subject_name }}</span>
+                                         <!-- <i class="icon fa fa-globe"></i> -->
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne{{subject.id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne4">
+                                <div class="panel-body">
+                                    <div class="panel-group" id="accordion5" role="tablist" aria-multiselectable="true">
+                                        {% for unit in subject.get_units %}
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="headingOne5">
+                                                <h4 class="panel-title">
+                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion5" href="#collapseOne{{unit.id}}" aria-expanded="true" aria-controls="collapseOne5">
+                                                        <span style="margin-left:10px;">{{unit.unit_name}}</span>
+                                                    </a>
+                                                </h4> 
+                                            </div>
+                                            <div id="collapseOne{{unit.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne5">
+                                                <div class="panel-body">
+                                                    {% for unit_part in unit.get_unit_parts %}    
+                                                    <h6><strong>{{unit_part.part_head}}</strong></h6>
+                                                    {% for topic in unit_part.get_topics %}
+                                                    <a href="topic/{{ topic.slug }}"> {{topic.topic_name}} </a><br/>
+                                                    {% endfor %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>    
+                                </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            </div>            
+        </div>
+    </div>
+<script>
+var content = 'If life is so blue, then select another colour from the rainbow';
+
+var ele = '<span>' + content.split('').join('</span><span>') + '</span>';
+
+
+$(ele).hide().appendTo('temp').each(function (i) {
+    $(this).delay(100 * i).css({
+        display: 'inline',
+        opacity: 0
+    }).animate({
+        opacity: 1
+    }, 100);
+});
+</script>
+{% endblock content %}

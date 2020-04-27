@@ -1,0 +1,189 @@
+{% extends 'base.html' %}   
+{% load static %}
+{% block css %}
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
+    <style class="cp-pen-styles">@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700&subset=latin-ext");
+    </style>
+    <link rel="stylesheet" href="{% static 'css/check.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Bitter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+
+
+{% endblock css %}
+{% block content %}
+
+    <body class="sidebar-is-reduced">
+      <header class="l-header">
+        <div class="l-header__inner clearfix">
+          <div class="c-header-icon js-hamburger">
+            <div class="hamburger-toggle" title="Explore more topics of {{subject.subject_name}}"><span class="bar-top"></span><span class="bar-mid"></span><span class="bar-bot"></span></div>
+          </div>
+          <div class="c-search">
+                <form method="get" style="display:inherit !important;margin:0px; width:inherit">
+    
+                <input class="c-search__input u-input" style="width:auto" placeholder="Search for topic you want to learn..." name="q" type="text"/>
+                <input type="submit" class="c-header-icon btn btn-secondary" style="background: transparent;font-family: 'Pacifico', cursive; font-size: x-large; margin-right:15px; border-right:0px" value="Search">
+                </form>
+              </div>
+          <div class="header-icons-group">
+            <div class="c-header-icon logout"><i class="fa fa-power-off"></i></div>
+          </div>
+        </div>
+      </header>
+      <div class="l-sidebar">
+        <div class="logo">
+          <div class="logo__txt" title="Dondler- Home"><a style="color:white;" href="/">D</a></div>
+        </div>
+        <div class="l-sidebar__content">
+          <nav class="c-menu js-menu">
+            <ul class="u-list">
+                <li class="c-menu__item has-submenu" data-toggle="tooltip" title="{{subject.subject_name}}">
+                    <div class="c-menu__item__inner" style="padding-left: 10px;">
+                      <div class="c-menu-item__title"><span style="font-weight: 900;">{{ subject.subject_name }}</span></div>
+                    </div>
+                  </li>
+
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </body>
+    {% if flag is 1 %}
+    <main class="l-main">
+        <div class="content-wrapper content-wrapper--with-bg">
+          <div class="list-group" style="margin-top:90px;">
+            <h3>Kindly enter something to search...</h3>
+            </div>
+            </div>
+    </main>
+    {% else %}
+    <main class="l-main">
+      <div class="content-wrapper content-wrapper--with-bg">
+        <div class="list-group" style="margin-top:90px;">
+            <h3>Topics found with name "{{ q }}"</h3>
+            <div class="box" style="padding:40px 0px;">
+                <div class="container">
+                    <div class="row">
+                    {% for topic in topics %}                             
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+               
+                            <div class="box-part text-center" style="background:#FFF;
+                            border-radius:0;
+                            padding:30px 5px;
+                            margin:0px;">
+                                                                
+                                <div class="title" style="font-family: 'Bitter', serif;">
+                                    <h2>{{topic.topic_name|title}}</h2>
+                                </div>
+                                
+                                <div class="text" style="margin:15px 0px;   ">
+                                    <span><strong><u>Subject</u></strong> :- {{topic.unit_part.unit.subject.subject_name }}</span>
+                                </div>
+                                
+                                <a href="/topic/{{topic.slug}}" style=" text-decoration:none; 
+                                color: #0062cc;
+                                border-bottom:2px solid #0062cc;">Learn More</a>
+                                
+                             </div>
+                        </div>	 
+                    {% endfor %}
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="list-group">
+                <h3>Subjects found with name "{{ q }}"</h3>
+                <div class="box" style="padding:40px 0px;">
+                    <div class="container">
+                        <div class="row">
+                        {% for subject in subjects %}                             
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                   
+                                <div class="box-part text-center" style="background:#FFF;
+                                border-radius:0;
+                                padding:30px 5px;
+                                margin:0px;">
+                                                                    
+                                    <div class="title" style="font-family: 'Bitter', serif;">
+                                        <h2>{{subject.subject_name|title}}</h2>
+                                    </div>
+                                    
+                                    <div class="text" style="margin:15px 0px;   ">
+                                        <span><strong><u>Semester</u></strong> :- {{ subject.semester }}</span>
+                                    </div>
+                                    <div class="text" style="margin:15px 0px;   ">
+                                            <span><strong><u>University</u></strong> :- Kurukshetra University</span>
+                                    </div>
+                                    <a href="/subject/{{subject.slug}}" style=" text-decoration:none; 
+                                    color: #0062cc;
+                                    border-bottom:2px solid #0062cc;">Learn More</a>
+                                    
+                                 </div>
+                            </div>	 
+                        {% endfor %}
+    
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    {% endif %}
+    <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script><script src='https://use.fontawesome.com/2188c74ac9.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    </body>
+    <script>
+    "use strict";
+    
+    var Dashboard = function () {
+        var global = {
+            tooltipOptions: {
+                placement: "right"
+            },
+            menuClass: ".c-menu"
+        };
+    
+        var menuChangeActive = function menuChangeActive(el) {
+            var hasSubmenu = $(el).hasClass("has-submenu");
+            $(global.menuClass + " .is-active").removeClass("is-active");
+            $(el).addClass("is-active");
+    
+            // if (hasSubmenu) {
+            // 	$(el).find("ul").slideDown();
+            // }
+        };
+    
+        var sidebarChangeWidth = function sidebarChangeWidth() {
+            var $menuItemsTitle = $("li .menu-item__title");
+    
+            $("body").toggleClass("sidebar-is-reduced sidebar-is-expanded");
+            $(".hamburger-toggle").toggleClass("is-opened");
+    
+            if ($("body").hasClass("sidebar-is-expanded")) {
+                $('[data-toggle="tooltip"]').tooltip("destroy");
+            } else {
+                $('[data-toggle="tooltip"]').tooltip(global.tooltipOptions);
+            }
+        };
+    
+        return {
+            init: function init() {
+                $(".js-hamburger").on("click", sidebarChangeWidth);
+    
+                $(".js-menu li").on("click", function (e) {
+                    menuChangeActive(e.currentTarget);
+                });
+    
+                $('[data-toggle="tooltip"]').tooltip(global.tooltipOptions);
+            }
+        };
+    }();
+    
+    Dashboard.init();
+    </script>
+    
+    {% endblock content %}
